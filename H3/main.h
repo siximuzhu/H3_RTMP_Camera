@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+int get_boad_serial(uint8_t *serial);
+
 int asd1013_init(void);
 int get_power(int fd);
 

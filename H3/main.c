@@ -9,12 +9,22 @@ void main(void)
 	char nrf_data[64];
 	int nrf_data_len;
 	int counter = 0;// receive ir times;
+	uint8_t serial[64];
 
 	fd_ads = ads1013_init();
 	fd_ir = ir_init();
 	nrf24l01_init();
 
 	memset(nrf_data,0x0,64);
+	memset(serial,0x0,64);
+
+	if(get_boad_serial(serial)){
+		printf("get boad serial fail!\n");
+		return -1;
+	}else{
+		printf("boad serial:%s\n",serial);
+	}
+	
 
 	while(1)
 	{
