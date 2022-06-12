@@ -14,7 +14,8 @@ typedef unsigned          char uint8_t;
 #define DYNAMIC_PACKET      1 		//1:?????, 0:??
 #define FIXED_PACKET_LEN    32		//???
 #define REPEAT_CNT          15		//????
-#define INIT_ADDR           0x34,0x43,0x10,0x10,0x01
+//#define INIT_ADDR           0x34,0x43,0x10,0x10,0x01
+#define INIT_ADDR           0x34,0x43,0x10,0x10,0x02
 
 typedef enum ModeType
 {

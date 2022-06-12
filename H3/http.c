@@ -24,7 +24,7 @@ int get_boad_serial(uint8_t *serial)
 		pfile = popen("cat /proc/cpuinfo | grep Serial | awk {'print     $3'}", "r");
 		if(NULL == pfile)
 				return -1;
-		fgets(serial,50,pfile);
+		fgets(serial,20,pfile);
 
 		return 0;
 }
