@@ -1,0 +1,37 @@
+#include "main.h"
+#include <stdio.h>
+
+void main(void)
+{
+	int fd_ads,fd_ir;
+	int power;
+	char ir_data[3] = {0x11,0x22,0x33};
+	char nrf_data[64];
+	int nrf_data_len;
+	int counter = 0;// receive ir times;
+
+	fd_ads = ads1013_init();
+	fd_ir = ir_init();
+	nrf24l01_init();
+
+	memset(nrf_data,0x0,64);
+
+	while(1)
+	{
+		if(ir_recv(fd_ir,ir_data,3) > 0){
+			counter += 1;
+			power = get_power(fd_ads);
+			printf("receive ir counter = %d,power = %d,ir recv data:0x%02x 0x%02x 0x%02x\n",counter,power,ir_data[0],ir_data[1],ir_data[2]);
+			http_post_data(counter,power);
+		}
+		
+		nrf_data_len = NRF24L01_RxPacket(nrf_data);
+		if(nrf_data_len > 0){
+			printf("nrf data:%s\n",nrf_data);	
+			ir_send(fd_ir,"\x11\x22\x33",3);
+			printf("send cmd to anther H3 by ir\n");
+		}
+	}
+	
+
+}
