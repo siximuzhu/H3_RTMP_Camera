@@ -29,10 +29,12 @@ void main(void)
 	while(1)
 	{
 		if(ir_recv(fd_ir,ir_data,3) > 0){
-			counter += 1;
-			power = get_power(fd_ads);
-			printf("receive ir counter = %d,power = %d,ir recv data:0x%02x 0x%02x 0x%02x\n",counter,power,ir_data[0],ir_data[1],ir_data[2]);
-			http_post_data(counter,power);
+			if(!memcmp(ir_data,"\x11\x22\x33",3)){
+				counter += 1;
+				power = get_power(fd_ads);
+				printf("receive ir counter = %d,power = %d,ir recv data:0x%02x 0x%02x 0x%02x\n",counter,power,ir_data[0],ir_data[1],ir_data[2]);
+				http_post_data(counter,power);
+			}
 		}
 		
 		nrf_data_len = NRF24L01_RxPacket(nrf_data);
