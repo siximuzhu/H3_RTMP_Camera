@@ -6,6 +6,7 @@ void main(void)
 	int fd_ads,fd_ir;
 	int power;
 	char ir_data[3] = {0x11,0x22,0x33};
+	int ir_data_len;
 	char nrf_data[64];
 	int nrf_data_len;
 	int counter = 0;// receive ir times;
@@ -25,10 +26,10 @@ void main(void)
 		printf("boad serial:%s\n",serial);
 	}
 	
-
 	while(1)
 	{
-		if(ir_recv(fd_ir,ir_data,3) > 0){
+		ir_data_len = ir_recv(fd_ir,ir_data,3); 
+		if(ir_data_len == 3){
 			if(!memcmp(ir_data,"\x11\x22\x33",3)){
 				counter += 1;
 				power = get_power(fd_ads);
@@ -36,7 +37,10 @@ void main(void)
 				http_post_data(counter,power);
 			}
 		}
-		
+		if(ir_data_len == 1){
+			printf("ir send success!\n");
+		}
+
 		nrf_data_len = NRF24L01_RxPacket(nrf_data);
 		if(nrf_data_len > 0){
 			printf("nrf data:%s\n",nrf_data);	

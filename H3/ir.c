@@ -47,6 +47,10 @@ int ir_recv(int fd,unsigned char *data,unsigned int len)
 		for(i = 0;i < len;i++)
 		{
 			data[i] = serialGetchar(fd);
+			/*if recv 0xf1:send ok*/
+			if(0xf1 == data[i]){
+				return 1;
+			}
 		}
 	}
 	else{
